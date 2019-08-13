@@ -11,13 +11,20 @@
 
 <div class="col-md-6">
 
-    <ul class="list-group">
-
-        <li class="list-group-item">
+    <ul class="list-inline">
+        <li>
             <a asp-action="Create" asp-controller="TodoItem" asp-route-todoListId="@Model.TodoListId">
                 <strong>Add New Item</strong>
             </a>
         </li>
+        <li>
+            <a asp-action="ShowHideCompleted" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-hideCompletedTasks="@(!Model.HideCompletedTasks)">
+                <strong>@(Model.HideCompletedTasks ? "Include" : "Hide") Completed Tasks</strong>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="list-group">
 
         @foreach (var item in Model.Items)
         {
@@ -36,31 +43,31 @@
             }
 
             <li class="list-group-item @contextualClass">
-                
+
                 <div class="row">
 
-                <div class="col-md-8">
-                    <a asp-action="Edit" asp-controller="TodoItem" asp-route-todoItemId="@item.TodoItemId">
+                    <div class="col-md-8">
+                        <a asp-action="Edit" asp-controller="TodoItem" asp-route-todoItemId="@item.TodoItemId">
 
-                        @if (item.IsDone)
-                        {
-                            <s>@item.Title</s>
-                        }
-                        else
-                        {
-                            <text>@item.Title</text>
-                        }
-                    </a>
-                </div>
+                            @if (item.IsDone)
+                            {
+                                <s>@item.Title</s>
+                            }
+                            else
+                            {
+                                <text>@item.Title</text>
+                            }
+                        </a>
+                    </div>
 
-                <div class="col-md-4 text-right">
-                    <small>
-                        @item.ResponsibleParty.UserName
+                    <div class="col-md-4 text-right">
+                        <small>
+                            @item.ResponsibleParty.UserName
 
-                        <img src="https://www.gravatar.com/avatar/@Gravatar.GetHash(item.ResponsibleParty.Email)?s=30"/>
+                            <img src="https://www.gravatar.com/avatar/@Gravatar.GetHash(item.ResponsibleParty.Email)?s=30" />
 
-                    </small>
-                </div>
+                        </small>
+                    </div>
                 </div>
 
             </li>
