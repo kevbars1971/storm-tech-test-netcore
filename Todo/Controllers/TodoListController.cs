@@ -35,12 +35,12 @@ namespace Todo.Controllers
         public IActionResult Detail(int todoListId)
         {
             var todoList = dbContext.SingleTodoList(todoListId);
-            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList);
+            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, new TodoListFilters());
             return View(viewmodel);
         }
 
         [HttpGet]
-        public IActionResult ShowHideCompleted([FromQuery]int todoListId, [FromQuery]bool hideCompletedTasks)
+        public IActionResult FilterTodoItems([FromQuery]int todoListId, [FromQuery]bool hideCompletedTasks, [FromQuery]bool orderByDecendingRank)
         {
             var todoList = dbContext.SingleTodoList(todoListId);
 
@@ -52,7 +52,26 @@ namespace Todo.Controllers
                     .ToList();
             }
 
-            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, hideCompletedTasks);
+            if (orderByDecendingRank)
+            {
+                todoList.Items = todoList.Items
+                    .OrderByDescending(i => i.Rank)
+                    .ToList();
+            }
+            else
+            {
+                todoList.Items = todoList.Items
+                    .OrderBy(i => i.Rank)
+                    .ToList();
+            }
+
+            var filters = new TodoListFilters
+            {
+                HideCompletedTasks = hideCompletedTasks,
+                OrderByDescendingRank = orderByDecendingRank
+            };
+
+            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, filters);
             return View("Detail", viewmodel);
         }
 

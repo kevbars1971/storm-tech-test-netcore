@@ -35,3 +35,7 @@ body {
         display: none;
     }
 }
+
+ul.action-buttons li strong {
+    margin-right: 10px;
+}

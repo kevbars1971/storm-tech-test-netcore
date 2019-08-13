@@ -11,15 +11,20 @@
 
 <div class="col-md-6">
 
-    <ul class="list-inline">
+    <ul class="list-inline action-buttons">
         <li>
             <a asp-action="Create" asp-controller="TodoItem" asp-route-todoListId="@Model.TodoListId">
-                <strong>Add New Item</strong>
+                <strong>Add New Item</strong>|
             </a>
         </li>
         <li>
-            <a asp-action="ShowHideCompleted" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-hideCompletedTasks="@(!Model.HideCompletedTasks)">
-                <strong>@(Model.HideCompletedTasks ? "Include" : "Exclude") Completed Tasks</strong>
+            <a asp-action="FilterTodoItems" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-hideCompletedTasks="@(!Model.Filters.HideCompletedTasks)" asp-route-orderByDecendingRank="@Model.Filters.OrderByDescendingRank">
+                <strong>@(Model.Filters.HideCompletedTasks ? "Include" : "Exclude") Completed Tasks</strong>|
+            </a>
+        </li>
+        <li>
+            <a asp-action="FilterTodoItems" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-orderByDecendingRank="@(!Model.Filters.OrderByDescendingRank)" asp-route-hideCompletedTasks="@(Model.Filters.HideCompletedTasks)">
+                <strong>Sort By @(Model.Filters.OrderByDescendingRank ? "Ascending" : "Descending") Rank</strong>
             </a>
         </li>
     </ul>
