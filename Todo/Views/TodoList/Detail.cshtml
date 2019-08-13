@@ -19,7 +19,7 @@
         </li>
         <li>
             <a asp-action="ShowHideCompleted" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-hideCompletedTasks="@(!Model.HideCompletedTasks)">
-                <strong>@(Model.HideCompletedTasks ? "Include" : "Hide") Completed Tasks</strong>
+                <strong>@(Model.HideCompletedTasks ? "Include" : "Exclude") Completed Tasks</strong>
             </a>
         </li>
     </ul>
