@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -42,36 +41,16 @@ namespace Todo.Controllers
         [HttpGet]
         public IActionResult FilterTodoItems([FromQuery]int todoListId, [FromQuery]bool hideCompletedTasks, [FromQuery]bool orderByDecendingRank)
         {
-            var todoList = dbContext.SingleTodoList(todoListId);
-
-            if (hideCompletedTasks)
-            {
-                // Normally I'd filter these in the repository or service by modifying the IQueryable
-                todoList.Items = todoList.Items
-                    .Where(i => !i.IsDone)
-                    .ToList();
-            }
-
-            if (orderByDecendingRank)
-            {
-                todoList.Items = todoList.Items
-                    .OrderByDescending(i => i.Rank)
-                    .ToList();
-            }
-            else
-            {
-                todoList.Items = todoList.Items
-                    .OrderBy(i => i.Rank)
-                    .ToList();
-            }
-
             var filters = new TodoListFilters
             {
                 HideCompletedTasks = hideCompletedTasks,
                 OrderByDescendingRank = orderByDecendingRank
             };
 
+            var todoList = dbContext.FilteredTodoList(todoListId, filters);
+
             var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, filters);
+
             return View("Detail", viewmodel);
         }
 
