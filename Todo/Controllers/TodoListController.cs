@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,23 @@ namespace Todo.Controllers
         }
 
         [HttpGet]
+        public IActionResult ShowHideCompleted([FromQuery]int todoListId, [FromQuery]bool hideCompletedTasks)
+        {
+            var todoList = dbContext.SingleTodoList(todoListId);
+
+            if (hideCompletedTasks)
+            {
+                // Normally I'd filter these in the repository or service by modifying the IQueryable
+                todoList.Items = todoList.Items
+                    .Where(i => !i.IsDone)
+                    .ToList();
+            }
+
+            var viewmodel = TodoListDetailViewmodelFactory.Create(todoList, hideCompletedTasks);
+            return View("Detail", viewmodel);
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             return View(new TodoListFields());
@@ -57,7 +75,7 @@ namespace Todo.Controllers
             await dbContext.AddAsync(todoList);
             await dbContext.SaveChangesAsync();
 
-            return RedirectToAction("Create", "TodoItem", new {todoList.TodoListId});
+            return RedirectToAction("Create", "TodoItem", new { todoList.TodoListId });
         }
     }
 }
