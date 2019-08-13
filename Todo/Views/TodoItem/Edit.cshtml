@@ -35,7 +35,7 @@
                 @Html.DropDownListFor(
                     m => m.Importance,
                     SelectListConvenience.ImportanceSelectListItems,
-                    new {@class="form-control"}
+                    new { @class = "form-control" }
                     )
                 <span asp-validation-for="Importance" class="text-danger"></span>
             </div>
@@ -48,11 +48,11 @@
 
 
             <div class="form-group">
-                <label asp-for="ResponsiblePartyId"></label>
+                <label asp-for="ResponsiblePartyId">Responsible Party</label>
                 @Html.DropDownListFor(
                     m => m.ResponsiblePartyId,
                     dbContext.UserSelectListItems(),
-                    new {@class="form-control"}
+                    new { @class = "form-control" }
                     )
                 <span asp-validation-for="ResponsiblePartyId" class="text-danger"></span>
             </div>
