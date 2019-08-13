@@ -18,13 +18,30 @@
             </a>
         </li>
         <li>
-            <a asp-action="FilterTodoItems" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-hideCompletedTasks="@(!Model.Filters.HideCompletedTasks)" asp-route-orderByDecendingRank="@Model.Filters.OrderByDescendingRank">
+            <a asp-action="FilterTodoItems" asp-controller="TodoList" 
+               asp-route-todoListId="@Model.TodoListId" 
+               asp-route-hideCompletedTasks="@(!Model.Filters.HideCompletedTasks)" 
+               asp-route-orderByDecendingRank="@Model.Filters.OrderByDescendingRank"
+               asp-route-orderByDescendingImportance="@Model.Filters.OrderByDescendingImportance">
                 <strong>@(Model.Filters.HideCompletedTasks ? "Include" : "Exclude") Completed Tasks</strong>|
             </a>
         </li>
         <li>
-            <a asp-action="FilterTodoItems" asp-controller="TodoList" asp-route-todoListId="@Model.TodoListId" asp-route-orderByDecendingRank="@(!Model.Filters.OrderByDescendingRank)" asp-route-hideCompletedTasks="@(Model.Filters.HideCompletedTasks)">
-                <strong>Sort By @(Model.Filters.OrderByDescendingRank ? "Ascending" : "Descending") Rank</strong>
+            <a asp-action="FilterTodoItems" asp-controller="TodoList" 
+               asp-route-todoListId="@Model.TodoListId" 
+               asp-route-orderByDecendingRank="@(!Model.Filters.OrderByDescendingRank)" 
+               asp-route-hideCompletedTasks="@(Model.Filters.HideCompletedTasks)"
+               asp-route-orderByDescendingImportance="@Model.Filters.OrderByDescendingImportance">
+                <strong>@(Model.Filters.OrderByDescendingRank ? "Ascending" : "Descending") Rank</strong>
+            </a>
+        </li>
+        <li>
+            <a asp-action="FilterTodoItems" asp-controller="TodoList" 
+               asp-route-todoListId="@Model.TodoListId" 
+               asp-route-orderByDescendingImportance="@(!Model.Filters.OrderByDescendingImportance)"
+               asp-route-orderByDecendingRank="@Model.Filters.OrderByDescendingRank" 
+               asp-route-hideCompletedTasks="@Model.Filters.HideCompletedTasks">
+                <strong>@(Model.Filters.OrderByDescendingImportance ? "Ascending" : "Descending") Importance</strong>
             </a>
         </li>
     </ul>
@@ -53,7 +70,6 @@
 
                     <div class="col-md-8">
                         <a asp-action="Edit" asp-controller="TodoItem" asp-route-todoItemId="@item.TodoItemId">
-
                             @if (item.IsDone)
                             {
                                 <s>@item.Title</s>
@@ -62,7 +78,9 @@
                             {
                                 <text>@item.Title</text>
                             }
-                        </a>
+                        </a><br />
+                        <text>Rank: </text><strong>@(item.Rank > 0 ? item.Rank.ToString() : "None")</strong>
+
                     </div>
 
                     <div class="col-md-4 text-right">

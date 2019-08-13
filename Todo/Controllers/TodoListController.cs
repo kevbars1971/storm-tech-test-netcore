@@ -39,12 +39,13 @@ namespace Todo.Controllers
         }
 
         [HttpGet]
-        public IActionResult FilterTodoItems([FromQuery]int todoListId, [FromQuery]bool hideCompletedTasks, [FromQuery]bool orderByDecendingRank)
+        public IActionResult FilterTodoItems([FromQuery]int todoListId, [FromQuery]bool hideCompletedTasks, [FromQuery]bool orderByDecendingRank, [FromQuery] bool orderByDescendingImportance)
         {
             var filters = new TodoListFilters
             {
                 HideCompletedTasks = hideCompletedTasks,
-                OrderByDescendingRank = orderByDecendingRank
+                OrderByDescendingRank = orderByDecendingRank,
+                OrderByDescendingImportance = orderByDescendingImportance
             };
 
             var todoList = dbContext.FilteredTodoList(todoListId, filters);

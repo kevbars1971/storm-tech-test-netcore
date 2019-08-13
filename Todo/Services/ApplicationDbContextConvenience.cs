@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Todo.Data;
 using Todo.Data.Entities;
@@ -24,25 +25,23 @@ namespace Todo.Services
                 .ThenInclude(ti => ti.ResponsibleParty)
                 .Single(tl => tl.TodoListId == todoListId);
 
+            IEnumerable<TodoItem> sortedItems = todoList.Items;
+
             if (filters.HideCompletedTasks)
             {
-                todoList.Items = todoList.Items
-                    .Where(i => !i.IsDone)
-                    .ToList();
+                sortedItems = sortedItems
+                    .Where(i => !i.IsDone);
             }
 
-            if (filters.OrderByDescendingRank)
-            {
-                todoList.Items = todoList.Items
-                    .OrderByDescending(i => i.Rank)//.ThenBy(i => i.Importance)
-                    .ToList();
-            }
-            else
-            {
-                todoList.Items = todoList.Items
-                    .OrderBy(i => i.Rank)//.ThenBy(i => i.Importance)
-                    .ToList();
-            }
+            sortedItems = filters.OrderByDescendingRank
+                ? sortedItems.OrderByDescending(i => i.Rank)
+                : sortedItems.OrderBy(i => i.Rank);
+
+            sortedItems = filters.OrderByDescendingImportance
+                ? sortedItems.OrderByDescending(i => (int) i.Importance)
+                : sortedItems.OrderBy(i => (int) i.Importance);
+
+            todoList.Items = sortedItems.ToList();
 
             return todoList;
         }

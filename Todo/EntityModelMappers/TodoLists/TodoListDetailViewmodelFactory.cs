@@ -10,7 +10,6 @@ namespace Todo.EntityModelMappers.TodoLists
         public static TodoListDetailViewmodel Create(TodoList todoList, TodoListFilters filters)
         {
             var items = todoList.Items
-                .OrderBy(tdl => (int)tdl.Importance)
                 .Select(TodoItemSummaryViewmodelFactory.Create)
                 .ToList();
 
